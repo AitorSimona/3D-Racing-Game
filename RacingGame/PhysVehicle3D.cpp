@@ -25,7 +25,7 @@ void PhysVehicle3D::Render()
 {
 	Cylinder wheel;
 
-	wheel.color = Red;
+	wheel.color = White;
 
 	for(int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
@@ -86,10 +86,42 @@ void PhysVehicle3D::Turn(float degrees)
 			vehicle->setSteeringValue(degrees, i);
 		}
 	}
+
 }
 
 // ----------------------------------------------------------------------------
 float PhysVehicle3D::GetKmh() const
 {
 	return vehicle->getCurrentSpeedKmHour();
+}
+
+vec3 PhysVehicle3D::GetForwardvec3()
+{
+	vec3 tmp;
+	tmp.x = vehicle->getForwardVector().getX();
+	tmp.y = vehicle->getForwardVector().getY();
+	tmp.z = vehicle->getForwardVector().getZ();
+
+	return tmp;
+}
+
+vec3 PhysVehicle3D::GetPosition()
+{
+	vec3 pos;
+
+	Cube chassis(this->info.chassis_size.x, this->info.chassis_size.y, this->info.chassis_size.z);
+	this->vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis.transform);
+	btQuaternion quat = this->vehicle->getChassisWorldTransform().getRotation();
+	btVector3 chassis_offset(this->info.chassis_offset.x, this->info.chassis_offset.y, this->info.chassis_offset.z);
+	chassis_offset = chassis_offset.rotate(quat.getAxis(), quat.getAngle());
+
+	chassis.transform.M[12] += chassis_offset.getX();
+	chassis.transform.M[13] += chassis_offset.getY();
+	chassis.transform.M[14] += chassis_offset.getZ();
+
+	pos.x = chassis.transform.M[12];
+	pos.y = chassis.transform.M[13];
+	pos.z = chassis.transform.M[14];
+
+	return pos;
 }

@@ -45,11 +45,17 @@ public:
 	PhysVehicle3D(btRigidBody* body, btRaycastVehicle* vehicle, const VehicleInfo& info);
 	~PhysVehicle3D();
 
+	// --- Core Functions ---
 	void Render();
 	void ApplyEngineForce(float force);
 	void Brake(float force);
 	void Turn(float degrees);
 	float GetKmh() const;
+	// -------
+
+	// --- Basic Stuff ---
+	vec3 GetForwardvec3();
+	vec3 GetPosition();
 public:
 
 	VehicleInfo info;
