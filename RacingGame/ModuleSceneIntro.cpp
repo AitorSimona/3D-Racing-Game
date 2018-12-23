@@ -25,6 +25,14 @@ bool ModuleSceneIntro::Start()
 	orthonormal_y = { 0.0f, 1.0f, 0.0f };
 	orthonormal_z = { 0.0f, 0.0f, 1.0f };
 
+	// Hinges Default Values 
+	HingecylinderRW = RWIDTH / 2.0f; // x axis
+	HingecylinderRealW = RWIDTH / 8.0f; // x axis
+	HingecylinderRH = 50.0f * RHEIGHT; // y axis
+
+	HingecubeW = RWIDTH / 2.0f; // x axis
+	HingecubeH = 2.0f * RHEIGHT; // y axis
+	HingecubeL = RLENGTH + RWIDTH; // z axis
 
 	// --- Main Road ---
 	// --- 1st part ---
@@ -40,6 +48,7 @@ bool ModuleSceneIntro::Start()
 	Cube cu9 = CreateCube(vec3(4.0f * RLENGTH, RHEIGHT, 3.0f * RWIDTH), vec3(cy5.GetPos().x + (4.0f * RLENGTH) / 2.0f, cy5.GetPos().y, cy5.GetPos().z));
 	Cylinder cy6 = CreateCylinder((3.0f * RWIDTH) / 2.0f, RHEIGHT, vec3(cu9.GetPos().x + cu9.GetPos().x / 2.0f, cu9.GetPos().y, cu9.GetPos().z));
 	Cube cu10 = CreateCube(vec3(2.0f * RLENGTH, RHEIGHT,  RWIDTH), vec3(cy6.GetPos().x + RLENGTH, cy6.GetPos().y + RHEIGHT * 3.0f, cy6.GetPos().z), White, 20.0f, orthonormal_z);
+
 	Cube cu11 = CreateCube(vec3(2.0f * RLENGTH, RHEIGHT, 3.0f * RWIDTH), vec3(cu10.GetPos().x + cu10.GetSize().x + RLENGTH/ 2.0f - 4.0f, cu10.GetPos().y + cu10.GetSize().z * tan(DEGTORAD * 30.0f) - 0.4f, cu10.GetPos().z), White);
 	Cylinder cy7 = CreateCylinder(RWIDTH / 2.0f, 50.0f * RHEIGHT, vec3(cu11.GetPos().x + cu11.GetSize().x / 3.0f - (RWIDTH / 2.0f), cu11.GetPos().y + cu11.GetSize().y / 2.0f - (50.0f * RHEIGHT) / 2.0f, cu11.GetPos().z), White);
 	Cube cu12 = CreateCube(vec3(3.0f * RWIDTH, RHEIGHT, 2.0f * RLENGTH), vec3(cu11.GetPos().x + cu11.GetSize().x / 2.0f - (3.0f * RWIDTH) / 2.0f, cy6.GetPos().y, cu11.GetPos().z - (3.0f *RLENGTH) / 2.0f - cu11.GetSize().z / 2.0f + 4.0f), White, -10.0f, orthonormal_x);
@@ -54,6 +63,7 @@ bool ModuleSceneIntro::Start()
 	Cylinder cy9 = CreateCylinder((3.0f * RWIDTH) / 2.0f, RHEIGHT, vec3(cu17.GetPos().x + cu17.GetSize().x / 2.0f, cu17.GetPos().y, cu17.GetPos().z));
 	Cube cu18 = CreateCube(vec3(3.0f * RWIDTH, RHEIGHT, 6.0f * RLENGTH), vec3(cy9.GetPos().x, cy9.GetPos().y, cy9.GetPos().z - (6.0f * RLENGTH) / 2.0f));
 	Cylinder cy10 = CreateCylinder((3.0f * RWIDTH) / 2.0f, RHEIGHT, vec3(cu18.GetPos().x, cu18.GetPos().y, cu18.GetPos().z - cu18.GetSize().z / 2.0f));
+
 	Cube cu19 = CreateCube(vec3(4.0f * RLENGTH, RHEIGHT, 3.0f * RWIDTH), vec3(cy10.GetPos().x + (4.0f * RLENGTH) / 2.0f, cy10.GetPos().y, cy10.GetPos().z));
 	Cylinder cy11 = CreateCylinder((3.0f * RWIDTH) / 2.0f, RHEIGHT, vec3(cu19.GetPos().x + cu19.GetSize().x / 2.0f, cu19.GetPos().y, cu19.GetPos().z));
 	Cube cu20 = CreateCube(vec3(3.0f * RWIDTH, RHEIGHT, 3.0f * RLENGTH), vec3(cy11.GetPos().x, cy11.GetPos().y, cy11.GetPos().z + (3.0f * RLENGTH) / 2.0f));
@@ -61,11 +71,33 @@ bool ModuleSceneIntro::Start()
 	Cube cu21 = CreateCube(vec3(RLENGTH, RHEIGHT, 3.0f * RWIDTH), vec3(cy12.GetPos().x - RLENGTH / 2.0f, cy12.GetPos().y, cy12.GetPos().z));
 	Cube cu22 = CreateCube(vec3(3.0f * RLENGTH, RHEIGHT, 3.0f * RWIDTH), vec3(cu21.GetPos().x - cu21.GetSize().x, cu21.GetPos().y + cu21.GetSize().y, cu21.GetPos().z ), White, -30.0f, orthonormal_z);
 
-	// --- Tunnel ---
+	// --- Tunnel (end) ---
 	Cube tunnel_wall = CreateCube(vec3(TUWIDTH, TUHEIGHT, TULENGTH), vec3(cu17.GetPos().x + (2.0f * RLENGTH) / 2.0f - cy9.radius - TUWIDTH / 2.0f, cu17.GetPos().y, cy9.GetPos().z - cy9.radius - TULENGTH / 2.0f), White);
 	Cube tunnel_wall2 = CreateCube(vec3(TUWIDTH, TUHEIGHT, TULENGTH), vec3(cu17.GetPos().x + (2.0f * RLENGTH) / 2.0f + cy9.radius + TUWIDTH / 2.0f, cu17.GetPos().y, cy9.GetPos().z - cy9.radius - TULENGTH / 2.0f), White);
 	Cube tunnel_wall3 = CreateCube(vec3((tunnel_wall2.GetPos().x + tunnel_wall2.GetSize().x / 2.0f) - (tunnel_wall.GetPos().x - tunnel_wall.GetSize().x / 2.0f), TUWIDTH / 4.0f, TULENGTH), vec3(tunnel_wall.GetPos().x + tunnel_wall.GetSize().x / 2.0f + cu18.GetSize().x / 2.0f, tunnel_wall.GetPos().y + tunnel_wall.GetSize().y / 2.0f + (TUWIDTH / 4.0f) / 2.0f, tunnel_wall.GetPos().z), White);
+
 	//_tunnel
+
+	// --- Hinges ---
+	Rot_cube = CreateCube(vec3(HingecubeW, HingecubeH, HingecubeL), vec3(cu6.GetPos().x + 20.0f, cu6.GetPos().y + 2.0f * HingecubeH, cu6.GetPos().z - HingecubeL / 2.0f), Red, 0.0f, vec3(0.0f, 0.0f, 0.0f), 0.0f, false, false);
+	bodyA = App->physics->AddBody(Rot_cube, 10000.0f);
+	Cylinder Rot_cylinder = CreateCylinder(HingecylinderRW, HingecylinderRH, vec3(Rot_cube.GetPos().x, Rot_cube.GetPos().y - HingecylinderRH / 2.0f, Rot_cube.GetPos().z), Red, true, 0.0f, vec3_zero, 0.0f, false, false);
+	PhysBody3D* bodyB = App->physics->AddBody(Rot_cylinder, 10000.0f);
+	Cylinder Real_cylinder = CreateCylinder(HingecylinderRealW, HingecylinderRH, vec3(Rot_cube.GetPos().x, Rot_cube.GetPos().y - HingecylinderRH / 2.0f, Rot_cube.GetPos().z), Red);
+
+	Rot_cube2 = CreateCube(vec3(HingecubeW, HingecubeH, HingecubeL), vec3(cu6.GetPos().x - 20.0f, cu6.GetPos().y + 2.0f * HingecubeH, cu6.GetPos().z + HingecubeL / 2.0f), Red, 0.0f, vec3_zero, 0.0f, false, false);
+	bodyA2 = App->physics->AddBody(Rot_cube2, 10000.0f);
+	Cylinder Rot_cylinder2 = CreateCylinder(HingecylinderRW, HingecylinderRH, vec3(Rot_cube2.GetPos().x, Rot_cube2.GetPos().y - HingecylinderRH / 2.0f, Rot_cube2.GetPos().z), Red, true, 0.0f, vec3_zero, 0.0f, false, false);
+	PhysBody3D* bodyB2 = App->physics->AddBody(Rot_cylinder2, 10000.0f);
+	Cylinder Real_cylinder2 = CreateCylinder(HingecylinderRealW, HingecylinderRH, vec3(Rot_cube2.GetPos().x, Rot_cube2.GetPos().y - HingecylinderRH / 2.0f, Rot_cube2.GetPos().z), Red);
+
+	bodyA->GetBody()->setLinearFactor(btVector3(0, 0, 0));
+	bodyA2->GetBody()->setLinearFactor(btVector3(0, 0, 0));
+	bodyB->GetBody()->setAngularFactor(btVector3(0, 0, 0));
+	bodyB2->GetBody()->setAngularFactor(btVector3(0, 0, 0));
+
+	App->physics->AddConstraintHinge(*bodyA, *bodyB, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), true, true);
+	App->physics->AddConstraintHinge(*bodyA2, *bodyB2, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), true, true);
 
 	return ret;
 }
@@ -74,6 +106,9 @@ bool ModuleSceneIntro::Start()
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
+
+	cubes.clear();
+	cylinders.clear();
 
 	return true;
 }
@@ -88,7 +123,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	// Blit cubes
 	p2List_item<Cube>* cube_item = cubes.getFirst();
 
-	while (cube_item != nullptr) {
+	while (cube_item != nullptr) 
+	{
 		cube_item->data.Render();
 
 		cube_item = cube_item->next;
@@ -97,12 +133,21 @@ update_status ModuleSceneIntro::Update(float dt)
 	// Blit cylinders
 	p2List_item<Cylinder>* cylinder_item = cylinders.getFirst();
 
-	while (cylinder_item != nullptr) {
+	while (cylinder_item != nullptr) 
+	{
 		cylinder_item->data.Render();
 
 		cylinder_item = cylinder_item->next;
 	}
 
+	// Update hinges
+	Rot_cube.Render();
+	Rot_cube2.Render();
+
+	bodyA->GetTransform(transform.M);
+	Rot_cube.transform = transform;
+	bodyA2->GetTransform(transform.M);
+	Rot_cube2.transform = transform;
 
 	return UPDATE_CONTINUE;
 }
@@ -130,22 +175,19 @@ Cube ModuleSceneIntro::CreateCube(vec3 size, vec3 pos, Color color, float angle,
 
 Cylinder ModuleSceneIntro::CreateCylinder(float radius, float height, vec3 pos, Color color, bool flip, float angle, vec3 u, float mass, bool draw, bool collider)
 {
-	Cylinder cy(radius, height);
-	cy.SetPos(pos.x, pos.y, pos.z);
-	cy.color = color;
+	Cylinder tmpcylinder(radius, height);
+	tmpcylinder.color = color;
+	tmpcylinder.SetPos(pos.x, pos.y, pos.z);
 
 	if (flip)
-		cy.SetRotation(90.0f, vec3(0.0f, 0.0f, 1.0f));
-
+		tmpcylinder.SetRotation(90.0f, vec3(0.0f, 0.0f, 1.0f));
 	if (angle != 0.0f)
-		cy.SetRotation(angle, vec3(u.x, u.y, u.z));
-
+		tmpcylinder.SetRotation(angle, vec3(u.x, u.y, u.z));
 	if (collider)
-		App->physics->AddBody(cy, mass);
-
+		App->physics->AddBody(tmpcylinder, mass);
 	if (draw)
-		cylinders.add(cy);
+		cylinders.add(tmpcylinder);
 
-	return cy;
+	return tmpcylinder;
 }
 

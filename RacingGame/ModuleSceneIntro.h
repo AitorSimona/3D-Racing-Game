@@ -54,4 +54,12 @@ public:
 	float GW = 150.0f, GH = 15.0f, GL = 100.0f;
 	float TUWIDTH = 6.0f, TUHEIGHT = 45.0f, TULENGTH = 144.0f;
 
+	// Hinge stuff
+	PhysBody3D* bodyA = nullptr;
+	PhysBody3D* bodyA2 = nullptr;
+	Cube Rot_cube;
+	Cube Rot_cube2;
+	float HingecylinderRW = 6.0f, HingecylinderRealW = 1.5f, HingecylinderRH = 25.0f, HingecubeW = 6.0f, HingecubeH = 1.0f, HingecubeL = 42.0f;
+
+	mat4x4 transform;
 };
