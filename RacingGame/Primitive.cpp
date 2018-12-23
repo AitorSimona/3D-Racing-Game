@@ -80,7 +80,11 @@ void Primitive::InnerRender() const
 
 	glPointSize(1.0f);
 }
-
+// ------------------------------------------------------------
+vec3 Primitive::GetPos() const
+{
+	return vec3(transform.M[12], transform.M[13], transform.M[14]);
+}
 // ------------------------------------------------------------
 void Primitive::SetPos(float x, float y, float z)
 {
@@ -97,6 +101,12 @@ void Primitive::SetRotation(float angle, const vec3 &u)
 void Primitive::Scale(float x, float y, float z)
 {
 	transform.scale(x, y, z);
+}
+
+// ------------------------------------------------------------
+vec3 Primitive::GetScale() const
+{
+	return vec3(transform.M[0], transform.M[5], transform.M[10]);
 }
 
 // CUBE ============================================
@@ -156,6 +166,12 @@ void Cube::InnerRender() const
 
 	glEnd();
 }
+
+vec3 Cube::GetSize() const
+{
+	return vec3(size.x, size.y, size.z);
+}
+
 
 // SPHERE ============================================
 Sphere::Sphere() : Primitive(), radius(1.0f)

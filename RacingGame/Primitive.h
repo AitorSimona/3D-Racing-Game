@@ -25,6 +25,8 @@ public:
 	void			SetRotation(float angle, const vec3 &u);
 	void			Scale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
+	vec3			GetScale() const;
+	vec3			GetPos() const;
 
 public:
 	
@@ -43,6 +45,7 @@ public :
 	Cube();
 	Cube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
+	vec3 GetSize() const;
 public:
 	vec3 size;
 };

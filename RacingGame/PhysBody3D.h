@@ -20,10 +20,12 @@ public:
 	void SetPos(float x, float y, float z);
 	void GetPos(float& x, float& y, float& z);
 	void SetAsSensor(bool is_sensor);
+	btRigidBody* GetBody() const;
+	bool IsSensor() const;
 
 private:
 	btRigidBody* body = nullptr;
-	bool is_sensor;
+	bool is_sensor = false;
 
 public:
 	p2List<Module*> collision_listeners;
