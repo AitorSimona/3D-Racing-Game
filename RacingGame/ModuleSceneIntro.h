@@ -21,8 +21,12 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
+	// --- Map stuff ---
 	Cube CreateCube(vec3 size = { 1.0f,1.0f,1.0f }, vec3 pos = { 0.0f, 0.0f, 0.0f }, Color color = White, float angle = 0.0f, vec3 u = (0.0f, 0.0f, 0.0f), float mass = 0.0f, bool draw = true, bool collider = true);
 	Cylinder CreateCylinder(float radius = 1.0f, float height = 1.0f, vec3 pos = { 0.0f,0.0f,0.0f }, Color color = White, bool flip = true, float angle = 0.0f, vec3 u = { 0.0f, 0.0f, 0.0f }, float mass = 0.0f, bool draw = true, bool collider = true);
+
+	// --- Sensor stuff ---
+	void CreateEndLine(vec3 size = { 1.0f,1.0f,1.0f }, vec3 pos = { 0.0f, 0.0f, 0.0f });
 
 public:
 	/*
@@ -44,17 +48,20 @@ public:
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
 
-	// Lists of primitives
+	// --- Lists of primitives ---
 	p2List<Cube> cubes;
 	p2List<Cylinder> cylinders;
 
-	// Map parameters
+	// --- Map parameters ---
 	vec3 orthonormal_x = { 0.0f,0.0f,0.0f }, orthonormal_y = { 0.0f,0.0f,0.0f }, orthonormal_z = { 0.0f,0.0f,0.0f }, vec3_zero = { 0.0f,0.0f,0.0f };
 	float RWIDTH = 12.0f, RHEIGHT = 0.5f, RLENGTH = 30.0f;
 	float GW = 150.0f, GH = 15.0f, GL = 100.0f;
 	float TUWIDTH = 6.0f, TUHEIGHT = 45.0f, TULENGTH = 144.0f;
 
-	// Hinge stuff
+	// --- End Line parameters ---
+	float EndLine_Width = 1.0f, EndLine_Length = 1.0f, Bar_Radius = 0.2f, Bar_Height = 30.0f;
+
+	// --- Hinge stuff ---
 	PhysBody3D* bodyA = nullptr;
 	PhysBody3D* bodyA2 = nullptr;
 	Cube Rot_cube;

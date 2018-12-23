@@ -26,13 +26,13 @@ bool ModuleSceneIntro::Start()
 	orthonormal_z = { 0.0f, 0.0f, 1.0f };
 
 	// Hinges Default Values 
-	HingecylinderRW = RWIDTH / 2.0f; // x axis
-	HingecylinderRealW = RWIDTH / 8.0f; // x axis
-	HingecylinderRH = 50.0f * RHEIGHT; // y axis
+	HingecylinderRW = RWIDTH / 2.0f; 
+	HingecylinderRealW = RWIDTH / 8.0f;
+	HingecylinderRH = 50.0f * RHEIGHT; 
 
-	HingecubeW = RWIDTH / 2.0f; // x axis
-	HingecubeH = 2.0f * RHEIGHT; // y axis
-	HingecubeL = RLENGTH + RWIDTH; // z axis
+	HingecubeW = RWIDTH / 2.0f; 
+	HingecubeH = 2.0f * RHEIGHT; 
+	HingecubeL = RLENGTH + RWIDTH; 
 
 	// --- Main Road ---
 	// --- 1st part ---
@@ -68,15 +68,13 @@ bool ModuleSceneIntro::Start()
 	Cylinder cy11 = CreateCylinder((3.0f * RWIDTH) / 2.0f, RHEIGHT, vec3(cu19.GetPos().x + cu19.GetSize().x / 2.0f, cu19.GetPos().y, cu19.GetPos().z));
 	Cube cu20 = CreateCube(vec3(3.0f * RWIDTH, RHEIGHT, 3.0f * RLENGTH), vec3(cy11.GetPos().x, cy11.GetPos().y, cy11.GetPos().z + (3.0f * RLENGTH) / 2.0f));
 	Cylinder cy12 = CreateCylinder((3.0f * RWIDTH) / 2.0f, RHEIGHT, vec3(cu20.GetPos().x, cu20.GetPos().y, cu20.GetPos().z + cu20.GetSize().z / 2.0f));
-	Cube cu21 = CreateCube(vec3(RLENGTH, RHEIGHT, 3.0f * RWIDTH), vec3(cy12.GetPos().x - RLENGTH / 2.0f, cy12.GetPos().y, cy12.GetPos().z));
-	Cube cu22 = CreateCube(vec3(3.0f * RLENGTH, RHEIGHT, 3.0f * RWIDTH), vec3(cu21.GetPos().x - cu21.GetSize().x, cu21.GetPos().y + cu21.GetSize().y, cu21.GetPos().z ), White, -30.0f, orthonormal_z);
 
 	// --- Tunnel (end) ---
 	Cube tunnel_wall = CreateCube(vec3(TUWIDTH, TUHEIGHT, TULENGTH), vec3(cu17.GetPos().x + (2.0f * RLENGTH) / 2.0f - cy9.radius - TUWIDTH / 2.0f, cu17.GetPos().y, cy9.GetPos().z - cy9.radius - TULENGTH / 2.0f), White);
 	Cube tunnel_wall2 = CreateCube(vec3(TUWIDTH, TUHEIGHT, TULENGTH), vec3(cu17.GetPos().x + (2.0f * RLENGTH) / 2.0f + cy9.radius + TUWIDTH / 2.0f, cu17.GetPos().y, cy9.GetPos().z - cy9.radius - TULENGTH / 2.0f), White);
 	Cube tunnel_wall3 = CreateCube(vec3((tunnel_wall2.GetPos().x + tunnel_wall2.GetSize().x / 2.0f) - (tunnel_wall.GetPos().x - tunnel_wall.GetSize().x / 2.0f), TUWIDTH / 4.0f, TULENGTH), vec3(tunnel_wall.GetPos().x + tunnel_wall.GetSize().x / 2.0f + cu18.GetSize().x / 2.0f, tunnel_wall.GetPos().y + tunnel_wall.GetSize().y / 2.0f + (TUWIDTH / 4.0f) / 2.0f, tunnel_wall.GetPos().z), White);
 
-	//_tunnel
+	//tunnel
 
 	// --- Hinges ---
 	Rot_cube = CreateCube(vec3(HingecubeW, HingecubeH, HingecubeL), vec3(cu6.GetPos().x + 20.0f, cu6.GetPos().y + 2.0f * HingecubeH, cu6.GetPos().z - HingecubeL / 2.0f), Red, 0.0f, vec3(0.0f, 0.0f, 0.0f), 0.0f, false, false);
@@ -98,6 +96,14 @@ bool ModuleSceneIntro::Start()
 
 	App->physics->AddConstraintHinge(*bodyA, *bodyB, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), true, true);
 	App->physics->AddConstraintHinge(*bodyA2, *bodyB2, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), true, true);
+
+	// --- End line ---
+	CreateEndLine(vec3(EndLine_Width*3.0f, RHEIGHT, EndLine_Length*1.5f), vec3(cu20.GetPos().x - EndLine_Width*16.5f,cu20.GetPos().y + 0.5f, cu20.GetPos().z));
+
+	Cylinder bar = CreateCylinder(Bar_Radius, Bar_Height, vec3(cu20.GetPos().x - cu20.GetSize().x, cu20.GetPos().y - cu20.GetSize().y, cu20.GetPos().z), Green);
+	Cylinder bar2 = CreateCylinder(Bar_Radius, Bar_Height, vec3(cu20.GetPos().x + cu20.GetSize().x, cu20.GetPos().y - cu20.GetSize().y, cu20.GetPos().z), Green);
+	Cube finish_line = CreateCube(vec3(bar2.GetPos().x - bar.GetPos().x, Bar_Height / 6.0f, RHEIGHT), vec3(cu20.GetPos().x, cu20.GetPos().y - cu20.GetSize().y + Bar_Height / 2.0f, cu20.GetPos().z), Green);
+	//End line
 
 	return ret;
 }
@@ -189,5 +195,29 @@ Cylinder ModuleSceneIntro::CreateCylinder(float radius, float height, vec3 pos, 
 		cylinders.add(tmpcylinder);
 
 	return tmpcylinder;
+}
+
+void ModuleSceneIntro::CreateEndLine(vec3 size, vec3 pos)
+{
+	Color c, c2;
+
+	for (int i = 0; i < 3; ++i) 
+	{
+		if (i % 2 != 0) 
+		{
+			c = Black;
+			c2 = White;
+		}
+		else 
+		{
+			c = White;
+			c2 = Black;
+		}
+		for (int j = 0; j < 6; ++j) 
+		{
+			CreateCube(size, vec3(pos.x + (j * 2 + 0) * size.x, pos.y, pos.z + i * size.z), c, 0.0f, vec3(0.0f, 0.0f, 0.0f), 0.0f, true, false);
+			CreateCube(size, vec3(pos.x + (j * 2 + 1) * size.x, pos.y, pos.z + i * size.z), c2, 0.0f, vec3_zero, 0.0f, true, false);
+		}
+	}
 }
 
