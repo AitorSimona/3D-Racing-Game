@@ -100,6 +100,7 @@ bool ModulePlayer::Start()
 	vehicle->SetPos(0, 12, 10);
 	
 	engine_timer.Start();
+	brake_timer.Start();
 
 	return true;
 }
@@ -141,22 +142,30 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
 	{
-		if(engine_timer.Read()> 7.0f*1000.0f)
-		App->audio->PlayFx(App->scene_intro->engine_fx, 1);
-
-		if (engine_timer.Read()> 7.0f*1000.0f)
+		if (engine_timer.Read() > 5.0f*1000.0f && App->scene_intro->laps != App->scene_intro->max_laps)	
+		{
+			App->audio->PlayFx(App->scene_intro->engine_fx, 1);
 			engine_timer.Start();
+		}
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && App->scene_intro->laps != App->scene_intro->max_laps)
 	{
 		acceleration = MAX_ACCELERATION;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && App->scene_intro->laps != App->scene_intro->max_laps)
 	{
-		if(vehicle->GetKmh() > 0.0f)
+		if (vehicle->GetKmh() > 0.0f)
+		{
 			brake = BRAKE_POWER / 25;
+
+			if (brake_timer.Read() > 5.0f*1000.0f)
+			{
+					App->audio->PlayFx(App->scene_intro->brake_fx);
+					brake_timer.Start();
+			}
+		}
 		else
 		acceleration = -MAX_ACCELERATION;
 		///brake = BRAKE_POWER/75;
@@ -203,7 +212,7 @@ update_status ModulePlayer::Update(float dt)
 
 	// --- RESPAWN ---
 
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN 
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN
 		|| App->scene_intro->victory
 		|| App->scene_intro->timeup)
 	{
@@ -211,14 +220,22 @@ update_status ModulePlayer::Update(float dt)
 		App->scene_intro->victory = false;
 		App->scene_intro->minutes = 1;
 		App->scene_intro->seconds = 30;
-	
+
 		SetLinV(App->scene_intro->vec3_zero);
 		SetAngV(App->scene_intro->vec3_zero);
 
 		vehicle->SetTransform(IdentityMatrix.M);
 		jump_cap = false;
 		jump_timer = 0.0f;
+		App->scene_intro->game_end = false;
+
+		if (App->scene_intro->laps == App->scene_intro->max_laps)
+		{
+			App->scene_intro->laps = 0;
+			App->audio->PlayMusic("audio/Main_Track.ogg", 0.0f);
+		}
 	}
+
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
@@ -226,11 +243,11 @@ update_status ModulePlayer::Update(float dt)
 
 	vehicle->Render();	
 
-	//App->camera->LookAt(vehicle->GetPosition());
-	//App->camera->Position = (vehicle->GetPosition() - vehicle->GetForwardvec3() * 10) + vec3(0, 3, 0);
+	App->camera->LookAt(vehicle->GetPosition());
+	App->camera->Position = (vehicle->GetPosition() - vehicle->GetForwardvec3() * 10) + vec3(0, 3, 0);
 
 	char title[80];
-	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f", vehicle->GetKmh(), App->scene_intro->minutes,App->scene_intro->seconds);
+	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f || laps: %i", vehicle->GetKmh(), App->scene_intro->minutes,App->scene_intro->seconds, App->scene_intro->laps);
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;

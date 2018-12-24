@@ -3,6 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
+#include "PhysVehicle3D.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -114,6 +115,7 @@ bool ModuleSceneIntro::Start()
 	engine_fx = App->audio->LoadFx("audio/Engine_fx.wav");
 	jump_fx = App->audio->LoadFx("audio/jump_fx.wav");
 	crash_fx = App->audio->LoadFx("audio/Crash_fx.wav");
+	brake_fx = App->audio->LoadFx("audio/brake_fx.wav");
 
 	return ret;
 }
@@ -136,7 +138,28 @@ update_status ModuleSceneIntro::Update(float dt)
 	//p.axis = true;
 	//p.Render();
 
+	if(laps!=max_laps)
 	UpdateTime(dt);
+
+	// --- Win Condition ---
+	if (laps == max_laps && !game_end)
+	{
+		game_end = true;
+		App->audio->PlayMusic("audio/Victory_Track.ogg", 0.0f);
+
+		App->player->SetLinV(App->scene_intro->vec3_zero);
+		App->player->SetAngV(App->scene_intro->vec3_zero);
+
+		App->player->vehicle->SetTransform(IdentityMatrix.M);
+		App->player->jump_cap = false;
+		App->player->jump_timer = 0.0f;
+	}
+
+	if (game_end)
+	{
+		App->player->jump_cap = true;
+		App->player->jump_timer = 0.0f;
+	}
 
 	// Blit cubes
 	p2List_item<Cube>* cube_item = cubes.getFirst();
@@ -174,6 +197,8 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1 == Endlap_sensor && body2 == (PhysBody3D*)App->player->vehicle) {
 		laps++;
+		
+		if(laps!=max_laps)
 		victory = true;
 	}
 }

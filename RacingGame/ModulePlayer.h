@@ -36,4 +36,5 @@ public:
 	float jump_force = 1000.0f;
 
 	Timer engine_timer;
+	Timer brake_timer;
 };

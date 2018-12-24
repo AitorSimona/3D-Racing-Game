@@ -84,10 +84,12 @@ public:
 	float seconds = 30;
 	bool timeup = false;
 	bool victory = false;
+	uint max_laps = 1;
+	bool game_end = false;
 
 	// --- FX ---
 	uint engine_fx = 0;
 	uint jump_fx = 0;
 	uint crash_fx = 0;
-
+	uint brake_fx = 0;
 };
