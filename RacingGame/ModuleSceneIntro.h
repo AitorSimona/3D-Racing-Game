@@ -82,6 +82,8 @@ public:
 	uint laps = 0;
 	int minutes = 1;
 	float seconds = 30;
+	int max_minutes = 1;
+	float max_seconds = 30;
 	bool timeup = false;
 	bool victory = false;
 	uint max_laps = 1;

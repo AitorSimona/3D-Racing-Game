@@ -198,6 +198,8 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if (body1 == Endlap_sensor && body2 == (PhysBody3D*)App->player->vehicle) {
 		laps++;
 		
+		App->scene_intro->max_seconds -= 10;
+
 		if(laps!=max_laps)
 		victory = true;
 	}
