@@ -130,6 +130,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	//p.axis = true;
 	//p.Render();
 
+	UpdateTime(dt);
+
 	// Blit cubes
 	p2List_item<Cube>* cube_item = cubes.getFirst();
 
@@ -165,7 +167,8 @@ update_status ModuleSceneIntro::Update(float dt)
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1 == Endlap_sensor && body2 == (PhysBody3D*)App->player->vehicle) {
-		App->player->respawn = true;
+		laps++;
+		victory = true;
 	}
 }
 
@@ -202,6 +205,24 @@ Cylinder ModuleSceneIntro::CreateCylinder(float radius, float height, vec3 pos, 
 		cylinders.add(tmpcylinder);
 
 	return tmpcylinder;
+}
+
+void ModuleSceneIntro::UpdateTime(float dt)
+{
+	if (minutes >= 0) 
+	{
+		seconds -= 1.0f * dt;
+
+		if (seconds <= 0)
+		{
+			seconds = 60.0f;
+			minutes -= 1;
+		}
+	}
+	else
+	{
+		timeup = true;
+	}
 }
 
 void ModuleSceneIntro::CreateEndLine(vec3 size, vec3 pos)

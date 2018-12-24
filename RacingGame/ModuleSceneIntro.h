@@ -25,8 +25,12 @@ public:
 	Cube CreateCube(vec3 size = { 1.0f,1.0f,1.0f }, vec3 pos = { 0.0f, 0.0f, 0.0f }, Color color = White, float angle = 0.0f, vec3 u = (0.0f, 0.0f, 0.0f), float mass = 0.0f, bool draw = true, bool collider = true);
 	Cylinder CreateCylinder(float radius = 1.0f, float height = 1.0f, vec3 pos = { 0.0f,0.0f,0.0f }, Color color = White, bool flip = true, float angle = 0.0f, vec3 u = { 0.0f, 0.0f, 0.0f }, float mass = 0.0f, bool draw = true, bool collider = true);
 
+	void UpdateTime(float dt);
+
 	// --- Sensor stuff ---
 	void CreateEndLine(vec3 size = { 1.0f,1.0f,1.0f }, vec3 pos = { 0.0f, 0.0f, 0.0f });
+
+
 
 public:
 	/*
@@ -72,4 +76,12 @@ public:
 	float HingecylinderRW = 6.0f, HingecylinderRealW = 1.5f, HingecylinderRH = 25.0f, HingecubeW = 6.0f, HingecubeH = 1.0f, HingecubeL = 42.0f;
 
 	mat4x4 transform;
+
+	// --- Gameplay stuff ---
+
+	uint laps = 0;
+	int minutes = 1;
+	float seconds = 30;
+	bool timeup = false;
+	bool victory = false;
 };
