@@ -214,8 +214,8 @@ update_status ModulePlayer::Update(float dt)
 
 	vehicle->Render();	
 
-	App->camera->LookAt(vehicle->GetPosition());
-	App->camera->Position = (vehicle->GetPosition() - vehicle->GetForwardvec3() * 10) + vec3(0, 3, 0);
+	//App->camera->LookAt(vehicle->GetPosition());
+	//App->camera->Position = (vehicle->GetPosition() - vehicle->GetForwardvec3() * 10) + vec3(0, 3, 0);
 
 	char title[80];
 	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f", vehicle->GetKmh(), App->scene_intro->minutes,App->scene_intro->seconds);

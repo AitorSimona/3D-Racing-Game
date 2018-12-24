@@ -98,7 +98,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->AddConstraintHinge(*bodyA2, *bodyB2, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), true, true);
 
 	// --- End line ---
-	CreateEndLine(vec3(EndLine_Width*3.0f, RHEIGHT, EndLine_Length*1.5f), vec3(cu20.GetPos().x - EndLine_Width*16.5f,cu20.GetPos().y + 0.5f, cu20.GetPos().z));
+	CreateEndLine(vec3(EndLine_Width*3.0f, RHEIGHT * 2.0f, EndLine_Length*1.5f), vec3(cu20.GetPos().x - EndLine_Width*16.5f,cu20.GetPos().y + 1.0f, cu20.GetPos().z));
 
 	Endlap_sensor = App->physics->AddBody(sensor, 0.0f);
 	Endlap_sensor->SetAsSensor(true);
@@ -108,6 +108,8 @@ bool ModuleSceneIntro::Start()
 	Cylinder bar2 = CreateCylinder(Bar_Radius, Bar_Height, vec3(cu20.GetPos().x + cu20.GetSize().x, cu20.GetPos().y - cu20.GetSize().y, cu20.GetPos().z), Green);
 	Cube finish_line = CreateCube(vec3(bar2.GetPos().x - bar.GetPos().x, Bar_Height / 6.0f, RHEIGHT), vec3(cu20.GetPos().x, cu20.GetPos().y - cu20.GetSize().y + Bar_Height / 2.0f, cu20.GetPos().z), Green);
 	//End line
+
+	App->audio->PlayMusic("audio/Main_Track.ogg", 0.0f);
 
 	return ret;
 }
