@@ -190,8 +190,10 @@ update_status ModulePlayer::Update(float dt)
 		acceleration = 0.0f;
 
 	// Z: restart game (spawn at first checkpoint)
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN || respawn)
 	{
+		respawn = false;
+
 		SetLinV(App->scene_intro->vec3_zero);
 		SetAngV(App->scene_intro->vec3_zero);
 

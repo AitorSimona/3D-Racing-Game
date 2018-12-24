@@ -29,6 +29,8 @@ public:
 	float acceleration = 0.0f;
 	float brake = 0.0f;
 
+	bool respawn = false;
+
 	// Vehicle jump
 	bool  jump_cap = false;
 	float jump_timer = 0.0f;
