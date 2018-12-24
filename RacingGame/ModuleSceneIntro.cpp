@@ -100,6 +100,10 @@ bool ModuleSceneIntro::Start()
 	// --- End line ---
 	CreateEndLine(vec3(EndLine_Width*3.0f, RHEIGHT, EndLine_Length*1.5f), vec3(cu20.GetPos().x - EndLine_Width*16.5f,cu20.GetPos().y + 0.5f, cu20.GetPos().z));
 
+	Endlap_sensor = App->physics->AddBody(sensor, 0.0f);
+	Endlap_sensor->SetAsSensor(true);
+	Endlap_sensor->collision_listeners.add(this);
+
 	Cylinder bar = CreateCylinder(Bar_Radius, Bar_Height, vec3(cu20.GetPos().x - cu20.GetSize().x, cu20.GetPos().y - cu20.GetSize().y, cu20.GetPos().z), Green);
 	Cylinder bar2 = CreateCylinder(Bar_Radius, Bar_Height, vec3(cu20.GetPos().x + cu20.GetSize().x, cu20.GetPos().y - cu20.GetSize().y, cu20.GetPos().z), Green);
 	Cube finish_line = CreateCube(vec3(bar2.GetPos().x - bar.GetPos().x, Bar_Height / 6.0f, RHEIGHT), vec3(cu20.GetPos().x, cu20.GetPos().y - cu20.GetSize().y + Bar_Height / 2.0f, cu20.GetPos().z), Green);
@@ -160,6 +164,9 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+	if (body1 == Endlap_sensor && body2 == (PhysBody3D*)App->player->vehicle) {
+		LOG("i'm working!!");
+	}
 }
 
 // Generic functions
@@ -218,6 +225,15 @@ void ModuleSceneIntro::CreateEndLine(vec3 size, vec3 pos)
 			CreateCube(size, vec3(pos.x + (j * 2 + 0) * size.x, pos.y, pos.z + i * size.z), c, 0.0f, vec3(0.0f, 0.0f, 0.0f), 0.0f, true, false);
 			CreateCube(size, vec3(pos.x + (j * 2 + 1) * size.x, pos.y, pos.z + i * size.z), c2, 0.0f, vec3_zero, 0.0f, true, false);
 		}
+
+		Cube tmp;
+		tmp.size = { 13 * size.x, 5*size.y, 5*size.z  };
+		tmp.SetPos(pos.x + tmp.GetSize().x / 2.25f, pos.y, pos.z);
+		tmp.axis = true;
+		tmp.wire = true;
+		tmp.color = Blue;
+
+		sensor = tmp;
 	}
 }
 

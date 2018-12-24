@@ -23,13 +23,13 @@ bool ModulePlayer::Start()
 	// Car properties ----------------------------------------
 	car.chassis_size.Set(2, 1, 4);
 	car.chassis_offset.Set(0, 1, 0);
-	car.mass = 100.0f;
-	car.suspensionStiffness = 10.88f;
+	car.mass = 200.0f;
+	car.suspensionStiffness = 15.88f;
 	car.suspensionCompression = 0.83f;
-	car.suspensionDamping = 0.3f;
-	car.maxSuspensionTravelCm = 1500.0f;
+	car.suspensionDamping = 0.8f;
+	car.maxSuspensionTravelCm = 750.0f;
 	car.frictionSlip = 200.0f;
-	car.maxSuspensionForce = 4000.0f;
+	car.maxSuspensionForce = 3000.0f;
 
 	// Wheel properties ---------------------------------------
 	float connection_height = 1.0f;
@@ -115,6 +115,18 @@ update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
 
+	// --- JUMP ---
+	if (jump_cap) 
+	{
+		jump_timer += 1.0f * dt;
+
+		if (jump_timer >= jump_lapse) 
+		{
+			jump_cap = false;
+			jump_timer = 0.0f;
+		}
+	}
+
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		acceleration = MAX_ACCELERATION;
@@ -123,7 +135,7 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		if(vehicle->GetKmh() > 0.0f)
-			brake = BRAKE_POWER / 75;
+			brake = BRAKE_POWER / 25;
 		else
 		acceleration = -MAX_ACCELERATION;
 		///brake = BRAKE_POWER/75;
@@ -158,15 +170,24 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !jump_cap)
+	{
+		vehicle->Push(0.0f, jump_force, 0.0f);
+		jump_cap = true;
+	}
+
+	if (vehicle->GetKmh() > 80)
+		acceleration = 0.0f;
+
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
 	vehicle->Render();	
 
-	/*App->camera->LookAt(vehicle->GetPosition());
+	App->camera->LookAt(vehicle->GetPosition());
 	App->camera->Position = (vehicle->GetPosition() - vehicle->GetForwardvec3() * 10) + vec3(0, 3, 0);
-*/
+
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);

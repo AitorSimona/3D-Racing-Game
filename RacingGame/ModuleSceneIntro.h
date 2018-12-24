@@ -60,6 +60,9 @@ public:
 
 	// --- End Line parameters ---
 	float EndLine_Width = 1.0f, EndLine_Length = 1.0f, Bar_Radius = 0.2f, Bar_Height = 30.0f;
+	PhysBody3D* Endlap_sensor = nullptr;
+	Cube sensor;
+
 
 	// --- Hinge stuff ---
 	PhysBody3D* bodyA = nullptr;
