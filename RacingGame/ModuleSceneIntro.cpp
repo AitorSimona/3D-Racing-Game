@@ -111,6 +111,10 @@ bool ModuleSceneIntro::Start()
 
 	App->audio->PlayMusic("audio/Main_Track.ogg", 0.0f);
 
+	engine_fx = App->audio->LoadFx("audio/Engine_fx.wav");
+	jump_fx = App->audio->LoadFx("audio/jump_fx.wav");
+	crash_fx = App->audio->LoadFx("audio/Crash_fx.wav");
+
 	return ret;
 }
 

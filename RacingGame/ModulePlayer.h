@@ -34,4 +34,6 @@ public:
 	float jump_timer = 0.0f;
 	float jump_lapse = 3.0f;
 	float jump_force = 1000.0f;
+
+	Timer engine_timer;
 };

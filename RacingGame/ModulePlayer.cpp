@@ -99,6 +99,8 @@ bool ModulePlayer::Start()
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);
 	
+	engine_timer.Start();
+
 	return true;
 }
 
@@ -135,6 +137,15 @@ update_status ModulePlayer::Update(float dt)
 			jump_cap = false;
 			jump_timer = 0.0f;
 		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	{
+		if(engine_timer.Read()> 7.0f*1000.0f)
+		App->audio->PlayFx(App->scene_intro->engine_fx, 1);
+
+		if (engine_timer.Read()> 7.0f*1000.0f)
+			engine_timer.Start();
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -184,6 +195,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		vehicle->Push(0.0f, jump_force, 0.0f);
 		jump_cap = true;
+		App->audio->PlayFx(App->scene_intro->jump_fx);
 	}
 
 	if (vehicle->GetKmh() > 80)
