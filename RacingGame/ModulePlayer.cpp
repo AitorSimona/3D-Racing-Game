@@ -110,6 +110,16 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
+inline void ModulePlayer::SetLinV(vec3 Velocity)
+{
+	vehicle->GetBody()->setLinearVelocity(btVector3(Velocity.x, Velocity.y, Velocity.z));
+}
+
+inline void ModulePlayer::SetAngV(vec3 Velocity)
+{
+	vehicle->GetBody()->setAngularVelocity(btVector3(Velocity.x, Velocity.y, Velocity.z));
+}
+
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
@@ -178,6 +188,17 @@ update_status ModulePlayer::Update(float dt)
 
 	if (vehicle->GetKmh() > 80)
 		acceleration = 0.0f;
+
+	// Z: restart game (spawn at first checkpoint)
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		SetLinV(App->scene_intro->vec3_zero);
+		SetAngV(App->scene_intro->vec3_zero);
+
+		vehicle->SetTransform(IdentityMatrix.M);
+		jump_cap = false;
+		jump_timer = 0.0f;
+	}
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);

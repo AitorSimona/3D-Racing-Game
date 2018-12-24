@@ -18,6 +18,8 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+	inline void SetLinV(vec3 Velocity); // Set Linear Velocity
+	inline void SetAngV(vec3 Velocity); // Set Angular Velocity
 
 public:
 	vec3 position = { 0.0f,0.0f,0.0f };
