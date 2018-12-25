@@ -110,12 +110,32 @@ bool ModuleSceneIntro::Start()
 	Cube finish_line = CreateCube(vec3(bar2.GetPos().x - bar.GetPos().x, Bar_Height / 6.0f, RHEIGHT), vec3(cu20.GetPos().x, cu20.GetPos().y - cu20.GetSize().y + Bar_Height / 2.0f, cu20.GetPos().z), Green);
 	//End line
 
+	// --- Obstacles ---
+
+	Cylinder cy13 = CreateCylinder(1.0f,HingecylinderRH/4.0f, vec3(cu.GetPos().x, cu.GetPos().y + HingecylinderRH / 8.0f, cu.GetPos().z + cu.GetSize().z), Red);
+	Cube auxcu = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu.GetPos().x, cu.GetPos().y + HingecylinderRH / 8.0f, cu.GetPos().z + cu.GetSize().z), Green);
+
+	Cylinder cy14 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(cu2.GetPos().x - 3.0f, cu2.GetPos().y + HingecylinderRH / 8.0f, cu2.GetPos().z + cu2.GetSize().z), Red);
+	Cube auxcu2 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu2.GetPos().x - 3.0f, cu2.GetPos().y + HingecylinderRH / 8.0f, cu2.GetPos().z + cu2.GetSize().z), Green);
+
+	Cylinder cy15 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(cu6.GetPos().x - 3.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z), Red);
+	Cube auxcu3 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu6.GetPos().x - 3.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z), Green);
+
+	Cylinder cy16 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(cu6.GetPos().x + 15.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z + 20.0f), Red);
+	Cube auxcu4 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu6.GetPos().x + 15.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z + 20.0f), Green);
+
+	Cylinder cy17 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(cu6.GetPos().x + 8.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z), Red);
+	Cube auxcu5 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu6.GetPos().x + 8.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z), Green);
+
+
+
 	App->audio->PlayMusic("audio/Main_Track.ogg", 0.0f);
 
 	engine_fx = App->audio->LoadFx("audio/Engine_fx.wav");
 	jump_fx = App->audio->LoadFx("audio/jump_fx.wav");
 	crash_fx = App->audio->LoadFx("audio/Crash_fx.wav");
 	brake_fx = App->audio->LoadFx("audio/brake_fx.wav");
+	game_over_fx = App->audio->LoadFx("audio/game_over.wav");
 
 	return ret;
 }
@@ -255,6 +275,7 @@ void ModuleSceneIntro::UpdateTime(float dt)
 	else
 	{
 		timeup = true;
+		App->audio->PlayFx(game_over_fx);
 	}
 }
 

@@ -86,7 +86,7 @@ public:
 	float max_seconds = 30;
 	bool timeup = false;
 	bool victory = false;
-	uint max_laps = 1;
+	uint max_laps = 2;
 	bool game_end = false;
 
 	// --- FX ---
@@ -94,4 +94,5 @@ public:
 	uint jump_fx = 0;
 	uint crash_fx = 0;
 	uint brake_fx = 0;
+	uint game_over_fx = 0;
 };
