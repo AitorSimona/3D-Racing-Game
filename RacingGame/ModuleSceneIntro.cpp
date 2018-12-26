@@ -227,21 +227,27 @@ update_status ModuleSceneIntro::Update(float dt)
 	//p.axis = true;
 	//p.Render();
 
-	if(laps!=max_laps)
+	if(laps!=max_laps && timeupcount != maxtimeups)
 	UpdateTime(dt);
 
-	// --- Win Condition ---
-	if (laps == max_laps && !game_end)
+	// --- Win/Lose Condition ---
+	if ((laps == max_laps  || timeupcount == maxtimeups) && !game_end)
 	{
 		game_end = true;
+		timeup = false;
+
+		if(timeupcount != maxtimeups)
 		App->audio->PlayMusic("audio/Victory_Track.ogg", 0.0f);
+
+		if (timeupcount == maxtimeups)
+		{
+			App->scene_intro->laps = 0;
+		}
 
 		App->player->SetLinV(App->scene_intro->vec3_zero);
 		App->player->SetAngV(App->scene_intro->vec3_zero);
 
 		App->player->vehicle->SetTransform(IdentityMatrix.M);
-		App->player->jump_cap = false;
-		App->player->jump_timer = 0.0f;
 	}
 
 	if (game_end)
@@ -291,14 +297,20 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	if (body1 == Endlap_sensor && body2 == (PhysBody3D*)App->player->vehicle) {
+	if (body1 == Endlap_sensor && body2 == (PhysBody3D*)App->player->vehicle) 
+	{
 
 		laps++;
 		
-		App->scene_intro->max_seconds -= 10;
+		max_seconds -= 10;
 
 		if(laps!=max_laps)
 		victory = true;
+
+		if (laps == max_laps || timeupcount == maxtimeups)
+		{
+			max_seconds = 30;
+		}
 	}
 }
 
@@ -353,6 +365,7 @@ void ModuleSceneIntro::UpdateTime(float dt)
 	{
 		timeup = true;
 		App->audio->PlayFx(game_over_fx);
+		timeupcount++;
 	}
 }
 

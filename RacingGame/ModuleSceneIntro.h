@@ -92,6 +92,8 @@ public:
 	bool victory = false;
 	uint max_laps = 3;
 	bool game_end = false;
+	uint timeupcount = 0; // if max reached, game lost
+	uint maxtimeups = 3;
 
 	// --- FX ---
 	uint engine_fx = 0;

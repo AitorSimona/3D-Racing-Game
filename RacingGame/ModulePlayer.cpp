@@ -142,19 +142,19 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
 	{
-		if (engine_timer.Read() > 5.0f*1000.0f && App->scene_intro->laps != App->scene_intro->max_laps)	
+		if (engine_timer.Read() > 7.0f*1000.0f && App->scene_intro->laps != App->scene_intro->max_laps && !App->scene_intro->game_end)
 		{
 			App->audio->PlayFx(App->scene_intro->engine_fx, 1);
 			engine_timer.Start();
 		}
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && App->scene_intro->laps != App->scene_intro->max_laps)
+	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT && App->scene_intro->laps != App->scene_intro->max_laps && !App->scene_intro->game_end)
 	{
 		acceleration = MAX_ACCELERATION;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && App->scene_intro->laps != App->scene_intro->max_laps)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT && App->scene_intro->laps != App->scene_intro->max_laps && !App->scene_intro->game_end)
 	{
 		if (vehicle->GetKmh() > 0.0f)
 		{
@@ -199,7 +199,7 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !jump_cap)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !jump_cap && !App->scene_intro->game_end)
 	{
 		vehicle->Push(0.0f, jump_force, 0.0f);
 		jump_cap = true;
@@ -226,7 +226,12 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->SetTransform(IdentityMatrix.M);
 		jump_cap = false;
 		jump_timer = 0.0f;
-		App->scene_intro->game_end = false;
+
+		if (App->scene_intro->game_end)
+		{
+			App->scene_intro->game_end = false;
+			App->scene_intro->timeupcount = 0;
+		}
 
 		if (App->scene_intro->laps == App->scene_intro->max_laps)
 		{
@@ -234,7 +239,6 @@ update_status ModulePlayer::Update(float dt)
 			App->audio->PlayMusic("audio/Main_Track.ogg", 0.0f);
 		}
 	}
-
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
@@ -245,12 +249,14 @@ update_status ModulePlayer::Update(float dt)
 	App->camera->LookAt(vehicle->GetPosition());
 	App->camera->Position = (vehicle->GetPosition() - vehicle->GetForwardvec3() * 10) + vec3(0, 3, 0);
 
-	char title[80];
-	if(App->scene_intro->laps != App->scene_intro->max_laps)
+	char title[150];
+	if(App->scene_intro->laps != App->scene_intro->max_laps && !App->scene_intro->game_end)
 	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f || laps: %i  ", vehicle->GetKmh(), App->scene_intro->minutes,App->scene_intro->seconds, App->scene_intro->laps);
+	else if (App->scene_intro->maxtimeups == App->scene_intro->timeupcount)
+	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f || laps: %i  MAX TIMEUPS REACHED - YOU LOSE!!!  PRESS --- R --- TO PLAY AGAIN", vehicle->GetKmh(), App->scene_intro->minutes, App->scene_intro->seconds, App->scene_intro->laps);
 	else
-	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f || laps: %i CONGRATULATIONS - YOU WIN!!! ", vehicle->GetKmh(), App->scene_intro->minutes, App->scene_intro->seconds, App->scene_intro->laps);
-
+	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f || laps: %i CONGRATULATIONS - YOU WIN!!! PRESS --- R --- TO PLAY AGAIN", vehicle->GetKmh(), App->scene_intro->minutes, App->scene_intro->seconds, App->scene_intro->laps);
+	
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;
