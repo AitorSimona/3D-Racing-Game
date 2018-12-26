@@ -113,20 +113,12 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
-inline void ModulePlayer::SetLinV(vec3 Velocity)
-{
-	vehicle->GetBody()->setLinearVelocity(btVector3(Velocity.x, Velocity.y, Velocity.z));
-}
-
-inline void ModulePlayer::SetAngV(vec3 Velocity)
-{
-	vehicle->GetBody()->setAngularVelocity(btVector3(Velocity.x, Velocity.y, Velocity.z));
-}
-
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
+
+	auxpos = vehicle->GetPosition();
 
 	// --- JUMP ---
 	if (jump_cap) 
@@ -213,15 +205,16 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN
 		|| App->scene_intro->victory
-		|| App->scene_intro->timeup)
+		|| App->scene_intro->timeup
+		|| auxpos.y < -50.0f)
 	{
 		App->scene_intro->timeup = false;
 		App->scene_intro->victory = false;
 		App->scene_intro->minutes = App->scene_intro->max_minutes;
 		App->scene_intro->seconds = App->scene_intro->max_seconds;
 
-		SetLinV(App->scene_intro->vec3_zero);
-		SetAngV(App->scene_intro->vec3_zero);
+		vehicle->SetLinV(App->scene_intro->vec3_zero, *vehicle);
+		vehicle->SetAngV(App->scene_intro->vec3_zero, *vehicle);
 
 		vehicle->SetTransform(IdentityMatrix.M);
 		jump_cap = false;

@@ -125,3 +125,13 @@ vec3 PhysVehicle3D::GetPosition()
 
 	return pos;
 }
+
+void PhysVehicle3D::SetLinV(vec3 Velocity, PhysVehicle3D &body)
+{
+	body.GetBody()->setLinearVelocity(btVector3(Velocity.x, Velocity.y, Velocity.z));
+}
+
+void PhysVehicle3D::SetAngV(vec3 Velocity, PhysVehicle3D &body)
+{
+	body.GetBody()->setAngularVelocity(btVector3(Velocity.x, Velocity.y, Velocity.z));
+}

@@ -30,8 +30,6 @@ public:
 	// --- Sensor stuff ---
 	void CreateEndLine(vec3 size = { 1.0f,1.0f,1.0f }, vec3 pos = { 0.0f, 0.0f, 0.0f });
 
-
-
 public:
 	/*
 	PhysBody3D* pb_snake[MAX_SNAKE];

@@ -51,6 +51,8 @@ public:
 	void Brake(float force);
 	void Turn(float degrees);
 	float GetKmh() const;
+	void SetLinV(vec3 Velocity, PhysVehicle3D &vehicle); // Set Linear Velocity
+    void SetAngV(vec3 Velocity, PhysVehicle3D &vehicle); // Set Angular Velocity
 	// -------
 
 	// --- Basic Stuff ---

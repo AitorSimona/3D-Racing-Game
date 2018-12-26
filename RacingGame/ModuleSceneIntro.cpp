@@ -5,6 +5,7 @@
 #include "PhysBody3D.h"
 #include "PhysVehicle3D.h"
 
+
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -244,8 +245,8 @@ update_status ModuleSceneIntro::Update(float dt)
 			App->scene_intro->laps = 0;
 		}
 
-		App->player->SetLinV(App->scene_intro->vec3_zero);
-		App->player->SetAngV(App->scene_intro->vec3_zero);
+		App->player->vehicle->SetLinV(App->scene_intro->vec3_zero, *App->player->vehicle);
+		App->player->vehicle->SetAngV(App->scene_intro->vec3_zero, *App->player->vehicle);
 
 		App->player->vehicle->SetTransform(IdentityMatrix.M);
 	}
