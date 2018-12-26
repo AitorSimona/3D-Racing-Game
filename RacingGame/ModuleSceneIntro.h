@@ -71,8 +71,12 @@ public:
 	// --- Hinge stuff ---
 	PhysBody3D* bodyA = nullptr;
 	PhysBody3D* bodyA2 = nullptr;
+	PhysBody3D* bodyA3 = nullptr;
+	PhysBody3D* bodyA4 = nullptr;
 	Cube Rot_cube;
 	Cube Rot_cube2;
+	Cube Rot_cube3;
+	Cube Rot_cube4;
 	float HingecylinderRW = 6.0f, HingecylinderRealW = 1.5f, HingecylinderRH = 25.0f, HingecubeW = 6.0f, HingecubeH = 1.0f, HingecubeL = 42.0f;
 
 	mat4x4 transform;

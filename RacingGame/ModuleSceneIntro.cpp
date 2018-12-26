@@ -78,6 +78,8 @@ bool ModuleSceneIntro::Start()
 	//tunnel
 
 	// --- Hinges ---
+
+	// --- straight road ---
 	Rot_cube = CreateCube(vec3(HingecubeW, HingecubeH, HingecubeL), vec3(cu6.GetPos().x + 20.0f, cu6.GetPos().y + 2.0f * HingecubeH, cu6.GetPos().z - HingecubeL / 2.0f), Red, 0.0f, vec3(0.0f, 0.0f, 0.0f), 0.0f, false, false);
 	bodyA = App->physics->AddBody(Rot_cube, 10000.0f);
 	Cylinder Rot_cylinder = CreateCylinder(HingecylinderRW, HingecylinderRH, vec3(Rot_cube.GetPos().x, Rot_cube.GetPos().y - HingecylinderRH / 2.0f, Rot_cube.GetPos().z), Red, true, 0.0f, vec3_zero, 0.0f, false, false);
@@ -97,6 +99,33 @@ bool ModuleSceneIntro::Start()
 
 	App->physics->AddConstraintHinge(*bodyA, *bodyB, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), true, true);
 	App->physics->AddConstraintHinge(*bodyA2, *bodyB2, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), vec3(0.0f, 0.0f, 0.0f), true, true);
+	
+	//straight road
+
+	// --- Separated platforms ---
+	Rot_cube3 = CreateCube(vec3(HingecubeW, HingecubeH, HingecubeL), vec3(cu15.GetPos().x + 20.0f, cu15.GetPos().y + 2.0f * HingecubeH, cu15.GetPos().z - HingecubeL / 2.0f), Red, 0.0f, vec3(0.0f, 0.0f, 0.0f), 0.0f, false, false);
+	bodyA3 = App->physics->AddBody(Rot_cube3, 10000.0f);
+	Cylinder Rot_cylinder3 = CreateCylinder(HingecylinderRW, HingecylinderRH, vec3(Rot_cube3.GetPos().x, Rot_cube3.GetPos().y - HingecylinderRH / 2.0f, Rot_cube3.GetPos().z), Red, true, 0.0f, vec3_zero, 0.0f, false, false);
+	PhysBody3D* bodyB3 = App->physics->AddBody(Rot_cylinder3, 10000.0f);
+	Cylinder Real_cylinder3 = CreateCylinder(HingecylinderRealW, HingecylinderRH, vec3(Rot_cube3.GetPos().x, Rot_cube3.GetPos().y - HingecylinderRH / 2.0f, Rot_cube3.GetPos().z), Red);
+
+	Rot_cube4 = CreateCube(vec3(HingecubeW, HingecubeH, HingecubeL), vec3(cu15.GetPos().x - 20.0f, cu15.GetPos().y + 2.0f * HingecubeH, cu15.GetPos().z + HingecubeL / 2.0f), Red, 0.0f, vec3_zero, 0.0f, false, false);
+	bodyA4 = App->physics->AddBody(Rot_cube4, 10000.0f);
+	Cylinder Rot_cylinder4 = CreateCylinder(HingecylinderRW, HingecylinderRH, vec3(Rot_cube4.GetPos().x, Rot_cube4.GetPos().y - HingecylinderRH / 2.0f, Rot_cube4.GetPos().z), Red, true, 0.0f, vec3_zero, 0.0f, false, false);
+	PhysBody3D* bodyB4 = App->physics->AddBody(Rot_cylinder4, 10000.0f);
+	Cylinder Real_cylinder4 = CreateCylinder(HingecylinderRealW, HingecylinderRH, vec3(Rot_cube4.GetPos().x, Rot_cube4.GetPos().y - HingecylinderRH / 2.0f, Rot_cube4.GetPos().z), Red);
+
+	bodyA3->GetBody()->setLinearFactor(btVector3(0, 0, 0));
+	bodyA4->GetBody()->setLinearFactor(btVector3(0, 0, 0));
+	bodyB3->GetBody()->setAngularFactor(btVector3(0, 0, 0));
+	bodyB4->GetBody()->setAngularFactor(btVector3(0, 0, 0));
+
+	App->physics->AddConstraintHinge(*bodyA3, *bodyB3, vec3_zero, vec3_zero, vec3(0.0f, -1.0f, 0.0f), vec3_zero, true, true);
+	App->physics->AddConstraintHinge(*bodyA4, *bodyB4, vec3_zero, vec3_zero, vec3(0.0f, 1.0f, 0.0f), vec3_zero, true, true);
+	
+	//Separated platforms
+
+	// Hinges
 
 	// --- End line ---
 	CreateEndLine(vec3(EndLine_Width*3.0f, RHEIGHT * 2.0f, EndLine_Length*1.5f), vec3(cu20.GetPos().x - EndLine_Width*16.5f,cu20.GetPos().y + 1.0f, cu20.GetPos().z));
@@ -112,6 +141,7 @@ bool ModuleSceneIntro::Start()
 
 	// --- Obstacles ---
 
+	// --- straight road ---
 	Cylinder cy13 = CreateCylinder(1.0f,HingecylinderRH/4.0f, vec3(cu.GetPos().x, cu.GetPos().y + HingecylinderRH / 8.0f, cu.GetPos().z + cu.GetSize().z), Red);
 	Cube auxcu = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu.GetPos().x, cu.GetPos().y + HingecylinderRH / 8.0f, cu.GetPos().z + cu.GetSize().z), Green);
 
@@ -126,6 +156,20 @@ bool ModuleSceneIntro::Start()
 
 	Cylinder cy17 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(cu6.GetPos().x + 8.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z), Red);
 	Cube auxcu5 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu6.GetPos().x + 8.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z), Green);
+
+	Cylinder cy18 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(cu6.GetPos().x + 15.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z + 70.0f), Red);
+	Cube auxcu6 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu6.GetPos().x + 15.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z + 70.0f), Green);
+
+	Cylinder cy19 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(cu6.GetPos().x + 4.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z + 20.0f), Red);
+	Cube auxcu7 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu6.GetPos().x + 4.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z + 20.0f), Green);
+
+	Cylinder cy20 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(cu6.GetPos().x - 4.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z + 20.0f), Red);
+	Cube auxcu8 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(cu6.GetPos().x - 4.0f, cu6.GetPos().y + HingecylinderRH / 8.0f, cu6.GetPos().z + cu6.GetSize().z + 20.0f), Green);
+	
+	//straight road
+
+	// --- Tunnel ---
+
 
 
 
@@ -204,11 +248,18 @@ update_status ModuleSceneIntro::Update(float dt)
 	// Update hinges
 	Rot_cube.Render();
 	Rot_cube2.Render();
+	Rot_cube3.Render();
+	Rot_cube4.Render();
 
 	bodyA->GetTransform(transform.M);
 	Rot_cube.transform = transform;
 	bodyA2->GetTransform(transform.M);
 	Rot_cube2.transform = transform;
+
+	bodyA3->GetTransform(transform.M);
+	Rot_cube3.transform = transform;
+	bodyA4->GetTransform(transform.M);
+	Rot_cube4.transform = transform;
 
 	return UPDATE_CONTINUE;
 }
