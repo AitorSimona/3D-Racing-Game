@@ -168,10 +168,35 @@ bool ModuleSceneIntro::Start()
 	
 	//straight road
 
-	// --- Tunnel ---
+	// --- Tunnel obstacles ---
+
+	Cylinder cy21 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(tunnel_wall2.GetPos().x -10.0f , tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 3.0f ), Red);
+	Cube auxcu9 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(tunnel_wall2.GetPos().x - 10.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 3.0f), Green);
+
+	Cylinder cy22 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(tunnel_wall2.GetPos().x - 30.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 3.0f ), Red);
+	Cube auxcu10 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(tunnel_wall2.GetPos().x - 30.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 3.0f), Green);
+
+	Cylinder cy23 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(tunnel_wall2.GetPos().x - 15.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 5.0f), Red);
+	Cube auxcu11 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(tunnel_wall2.GetPos().x - 15.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 5.0f), Green);
+
+	Cylinder cy24 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(tunnel_wall2.GetPos().x - 22.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 6.0f), Red);
+	Cube auxcu12 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(tunnel_wall2.GetPos().x - 22.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 6.0f), Green);
 
 
+	Cylinder cy25 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(tunnel_wall2.GetPos().x - 10.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 8.0f - 40.0f), Red);
+	Cube auxcu13 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(tunnel_wall2.GetPos().x - 10.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 8.0f - 40.0f), Green);
 
+	Cylinder cy26 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(tunnel_wall2.GetPos().x - 30.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 8.0f - 20.0f), Red);
+	Cube auxcu14 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(tunnel_wall2.GetPos().x - 30.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 8.0f - 20.0f), Green);
+
+	Cylinder cy27 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(tunnel_wall2.GetPos().x - 15.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 10.0f - 40.0f), Red);
+	Cube auxcu15 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(tunnel_wall2.GetPos().x - 15.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 10.0f - 40.0f), Green);
+
+	Cylinder cy28 = CreateCylinder(1.0f, HingecylinderRH / 4.0f, vec3(tunnel_wall2.GetPos().x - 22.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 11.0f - 20.0f), Red);
+	Cube auxcu16 = CreateCube(vec3(1.0f, HingecylinderRH / 4.0f, 1.0f), vec3(tunnel_wall2.GetPos().x - 22.0f, tunnel_wall.GetPos().y + HingecylinderRH / 8.0f, tunnel_wall.GetPos().z + tunnel_wall.GetSize().z / 11.0f - 20.0f), Green);
+
+
+	//Tunnel obstacles
 
 	App->audio->PlayMusic("audio/Main_Track.ogg", 0.0f);
 
@@ -267,6 +292,7 @@ update_status ModuleSceneIntro::Update(float dt)
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1 == Endlap_sensor && body2 == (PhysBody3D*)App->player->vehicle) {
+
 		laps++;
 		
 		App->scene_intro->max_seconds -= 10;

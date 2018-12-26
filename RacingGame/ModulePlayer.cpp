@@ -168,8 +168,7 @@ update_status ModulePlayer::Update(float dt)
 		}
 		else
 		acceleration = -MAX_ACCELERATION;
-		///brake = BRAKE_POWER/75;
-		//acceleration = MAX_ACCELERATION;;
+
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -247,7 +246,11 @@ update_status ModulePlayer::Update(float dt)
 	App->camera->Position = (vehicle->GetPosition() - vehicle->GetForwardvec3() * 10) + vec3(0, 3, 0);
 
 	char title[80];
-	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f || laps: %i ", vehicle->GetKmh(), App->scene_intro->minutes,App->scene_intro->seconds, App->scene_intro->laps);
+	if(App->scene_intro->laps != App->scene_intro->max_laps)
+	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f || laps: %i  ", vehicle->GetKmh(), App->scene_intro->minutes,App->scene_intro->seconds, App->scene_intro->laps);
+	else
+	sprintf_s(title, "%.1f Km/h || Time: %i:%.1f || laps: %i CONGRATULATIONS - YOU WIN!!! ", vehicle->GetKmh(), App->scene_intro->minutes, App->scene_intro->seconds, App->scene_intro->laps);
+
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;

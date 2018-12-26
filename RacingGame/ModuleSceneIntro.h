@@ -90,7 +90,7 @@ public:
 	float max_seconds = 30;
 	bool timeup = false;
 	bool victory = false;
-	uint max_laps = 2;
+	uint max_laps = 3;
 	bool game_end = false;
 
 	// --- FX ---
