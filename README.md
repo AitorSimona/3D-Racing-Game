@@ -30,6 +30,8 @@ but with the same number of laps you had completed. Third time is game over.
 
 - R : Respawn
 
+- ESCAPE : Close Game
+
 ### Authors
 
 - Aitor Simona
